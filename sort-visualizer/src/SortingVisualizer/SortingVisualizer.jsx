@@ -19,8 +19,9 @@ export default class SortingVisualizer extends React.Component {
     // create array of random 100 integer elements
     resetArray(){
         const array = [];
-        for (let i = 0; i < 100; i++) {
-            array.push(randomIntFromInterval(5, 1000));
+        // TODO: currently values are hard encoded to fit screen, will need to update to be more reactive
+        for (let i = 0; i < 330; i++) {
+            array.push(randomIntFromInterval(5, 650));
         }
         this.setState({array});
     }
@@ -30,13 +31,14 @@ export default class SortingVisualizer extends React.Component {
         const {array} = this.state;
 
         return (
-            <>
-            {array.map((value, idx) => (
-                <div className="array-bar" key={idx}>
-                    {value}
-                </div>
-            ))}
-            </>
+            <div className="array-container">
+                {array.map((value, idx) => (
+                    <div 
+                        className="array-bar" 
+                        key={idx}
+                        style={{height: `${value}px`}}></div>
+                ))}
+            </div>
         );
     }
 }
