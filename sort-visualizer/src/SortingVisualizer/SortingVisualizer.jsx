@@ -1,5 +1,7 @@
 import React from 'react';
 import * as mergeSortAlg from '../SortingAlgorithms/mergeSort';
+import * as heapSortAlg from '../SortingAlgorithms/heapSort';
+import * as bubbleSortAlg from '../SortingAlgorithms/bubbleSort';
 import './SortingVisualizer.css';
 
 // Animation speed value
@@ -46,22 +48,26 @@ export default class SortingVisualizer extends React.Component {
     heapSort() {}
 
     mergeSort() {
-        // const javaScriptSortedArray = this.state.array.slice().sort((a, b) => a - b); // duplicate array for testing sort algorithm
-
+        // call merge sort to produce an array that represents the series of comparisons/swaps made during sort process
         const animations = mergeSortAlg.mergeSort(this.state.array);
+
+        // display sequence of animations made during merge sort process
         for (let i = 0; i < animations.length; i++) {
             const arrayBars = document.getElementsByClassName('array-bar');
             const isColorChange = i % 3 !== 2;
+            // Check if color needs to be updated
             if (isColorChange) {
                 const [barOneIdx, barTwoIdx] = animations[i];
                 const barOneStyle = arrayBars[barOneIdx].style;
                 const barTwoStyle = arrayBars[barTwoIdx].style;
-                const color = i  % 3 === 0 ? 'red' : 'black'; // NOTE: red bars are currently being sorted, black bars are idle bars in wait 
+                const color = i  % 3 === 0 ? 'red' : 'black'; // NOTE: red bars are currently being sorted (0), black bars are idle bars in wait
                 setTimeout(() => {
                     barOneStyle.backgroundColor = color;
                     barTwoStyle.backgroundColor = color;
                 }, i * ANIMATION_SPEED_MS);
-            } else {
+            }
+            // Else height needs to be changed
+            else {
                 setTimeout(() => {
                     const [barOneIdx, newHeight] = animations[i];
                     const barOneStyle = arrayBars[barOneIdx].style;
@@ -69,8 +75,6 @@ export default class SortingVisualizer extends React.Component {
                 }, i * ANIMATION_SPEED_MS);
             }
         }
-
-        // console.log(arraysAreEqual(javaScriptSortedArray, animations)); // log statement for ensuring arrays are equal
     }
 
     quickSort() {}
@@ -100,13 +104,4 @@ export default class SortingVisualizer extends React.Component {
 // random integer between a minimum and a maximum (note: numbers smaller than 5 are harder to visualize, duplicates are also encouraged)
 function randomIntFromInterval(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
-}
-
-// ensures the two sorted arrays are equal, used to ensure my sort algorithms are consistent with built-in sort algorithms
-function arraysAreEqual(arrayOne, arrayTwo) {
-    if(arrayOne.length !== arrayTwo.length) return false;
-    for (let i = 0; i < arrayOne.length; i++) {
-        if(arrayOne[i] !== arrayTwo[i]) return false;
-    }
-    return true;
 }
