@@ -1,8 +1,11 @@
 .array-container {
     position: absolute;
-    left: 100px;
     top: 50px;
-}
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    white-space: nowrap;
+  }
 
 .array-bar {
     width: 2px;

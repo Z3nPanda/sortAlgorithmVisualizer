@@ -2,6 +2,12 @@ import React from 'react';
 import * as mergeSortAlg from '../SortingAlgorithms/mergeSort';
 import * as heapSortAlg from '../SortingAlgorithms/heapSort';
 import * as bubbleSortAlg from '../SortingAlgorithms/bubbleSort';
+
+import Button from '@mui/material/Button';
+import { ThemeProvider } from '@mui/material/styles';
+import theme from '../StyleFeatures/theme';
+import ButtonGroup from '../Components/button';
+
 import './SortingVisualizer.css';
 
 // Animation speed value
@@ -24,6 +30,13 @@ export default class SortingVisualizer extends React.Component {
         this.state = {
             array: [],
         };
+
+        // bind the methods to the component instance
+        this.resetArray = this.resetArray.bind(this);
+        this.bubbleSort = this.bubbleSort.bind(this);
+        this.heapSort = this.heapSort.bind(this);
+        this.mergeSort = this.mergeSort.bind(this);
+        this.quickSort = this.quickSort.bind(this);
     }
 
     // when the app loads, reset the array
@@ -48,6 +61,8 @@ export default class SortingVisualizer extends React.Component {
     heapSort() {}
 
     mergeSort() {
+        // merge sort implementation from following https://www.youtube.com/watch?v=pFXYym4Wbkc tutorial to learn basic setup for sort visualization
+
         // call merge sort to produce an array that represents the series of comparisons/swaps made during sort process
         const animations = mergeSortAlg.mergeSort(this.state.array);
 
@@ -91,11 +106,15 @@ export default class SortingVisualizer extends React.Component {
                         key={idx}
                         style={{height: `${value}px`}}></div>
                 ))}
-            <button onClick={() => this.resetArray()}>Generate New Array</button>
-            <button onClick={() => this.bubbleSort()}>Bubble Sort</button>
-            <button onClick={() => this.heapSort()}>Heap Sort</button>
-            <button onClick={() => this.mergeSort()}>Merge Sort</button>
-            <button onClick={() => this.quickSort()}>Quick Sort</button>
+            <ThemeProvider theme={theme}>
+                <ButtonGroup
+                    resetArray={this.resetArray}
+                    bubbleSort={this.bubbleSort}
+                    heapSort={this.heapSort}
+                    mergeSort={this.mergeSort}
+                    quickSort={this.quickSort}
+                />
+            </ThemeProvider>
             </div>
         );
     }
