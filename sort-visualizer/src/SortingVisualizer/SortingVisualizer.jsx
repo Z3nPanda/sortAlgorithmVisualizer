@@ -56,7 +56,48 @@ export default class SortingVisualizer extends React.Component {
 
     // sort algorithm routines
 
-    bubbleSort() {}
+    bubbleSort() {
+        const { animations, sortedArray } = bubbleSortAlg.bubbleSort(this.state.array);
+
+        // ensure sorting algorithm is working
+        const isSorted = arrayIsSorted(sortedArray);
+        console.log("Is sorted:", isSorted);
+      
+        for (let i = 0; i < animations.length; i++) {
+          const arrayBars = document.getElementsByClassName('array-bar');
+          const [barOneIdx, barTwoIdx, ...rest] = animations[i];
+          const isColorChange = rest.length === 0;
+      
+          if (isColorChange) {
+
+            // color change animation
+            setTimeout(() => {
+              const barOneStyle = arrayBars[barOneIdx].style;
+              const barTwoStyle = arrayBars[barTwoIdx].style;
+              const color = i % 4 === 0 ? 'red' : 'black';
+              barOneStyle.backgroundColor = color;
+              barTwoStyle.backgroundColor = color;
+      
+              // revert color after a short delay
+              setTimeout(() => {
+                barOneStyle.backgroundColor = 'black';
+                barTwoStyle.backgroundColor = 'black';
+              }, ANIMATION_SPEED_MS);
+            }, i * ANIMATION_SPEED_MS);
+          } else {
+            // swap animation
+            setTimeout(() => {
+              const barOneStyle = arrayBars[barOneIdx].style;
+              const barTwoStyle = arrayBars[barTwoIdx].style;
+              const tempHeight = barOneStyle.height;
+              barOneStyle.height = barTwoStyle.height;
+              barTwoStyle.height = tempHeight;
+            }, i * ANIMATION_SPEED_MS);
+          }
+        }
+      }
+      
+      
 
     heapSort() {}
 
@@ -124,3 +165,19 @@ export default class SortingVisualizer extends React.Component {
 function randomIntFromInterval(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
 }
+
+// helper to ensure arrays are sorted
+function arrayIsSorted(arr) {
+    const sortedArr = [...arr];
+    // sort the array numerically
+    sortedArr.sort((a, b) => a - b);
+  
+    // compare each element of the original and sorted array
+    for (let i = 0; i < arr.length; i++) {
+      if (arr[i] !== sortedArr[i]) {
+        return false;
+      }
+    }
+
+    return true;
+  }
