@@ -1,6 +1,6 @@
 .array-container {
-    position: absolute;
-    top: 50px;
+    position: fixed;
+    top: 20%; /* Adjust the position as needed */
     left: 0;
     right: 0;
     margin: 0 auto;
@@ -13,3 +13,31 @@
     display: inline-block;
     margin: 0 1px;
 }
+
+.sorting-visualizer-title {
+  text-align: center;
+  font-size: 32px;
+  font-weight: bold;
+  color: #0b2942;
+  margin-top: 20px;
+}
+
+.sort-analytics {
+  background-color: #f5f5f5;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center; /* Center the text vertically */
+  margin-top: 20px;
+}
+
+.sort-analytics p {
+  margin: 0; /* Remove margin to avoid extra space */
+  padding: 5px 10px; /* Adjust the padding to control the spacing */
+  text-align: center; /* Center the text horizontally */
+}
+
+

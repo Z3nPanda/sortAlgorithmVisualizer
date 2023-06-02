@@ -1,9 +1,7 @@
 import React from 'react';
 import * as mergeSortAlg from '../SortingAlgorithms/mergeSort';
-import * as heapSortAlg from '../SortingAlgorithms/heapSort';
+// import * as heapSortAlg from '../SortingAlgorithms/heapSort';
 import * as bubbleSortAlg from '../SortingAlgorithms/bubbleSort';
-
-import Button from '@mui/material/Button';
 import { ThemeProvider } from '@mui/material/styles';
 import theme from '../StyleFeatures/theme';
 import ButtonGroup from '../Components/button';
@@ -17,7 +15,7 @@ const ANIMATION_SPEED_MS = 1;
 const NUMBER_OF_ARRAY_BARS = 330;
 
 // Max array value
-const MAX_ARRAY_VALUE = 650;
+const MAX_ARRAY_VALUE = 550;
 
 // Min array value
 const MIN_ARRAY_VALUE = 5;
@@ -62,7 +60,7 @@ export default class SortingVisualizer extends React.Component {
         // ensure sorting algorithm is working
         const isSorted = arrayIsSorted(sortedArray);
         console.log("Is sorted:", isSorted);
-      
+
         for (let i = 0; i < animations.length; i++) {
           const arrayBars = document.getElementsByClassName('array-bar');
           const [barOneIdx, barTwoIdx, ...rest] = animations[i];
@@ -140,22 +138,31 @@ export default class SortingVisualizer extends React.Component {
         const {array} = this.state;
 
         return (
-            <div className="array-container">
-                {array.map((value, idx) => (
-                    <div 
-                        className="array-bar" 
-                        key={idx}
-                        style={{height: `${value}px`}}></div>
-                ))}
-            <ThemeProvider theme={theme}>
-                <ButtonGroup
-                    resetArray={this.resetArray}
-                    bubbleSort={this.bubbleSort}
-                    heapSort={this.heapSort}
-                    mergeSort={this.mergeSort}
-                    quickSort={this.quickSort}
-                />
-            </ThemeProvider>
+            <div className="sorting-visualizer-container">
+                <div className="header">
+                    <h1 className="sorting-visualizer-title">Sorting Visualizer</h1>
+                    <div className="sort-analytics">
+                        <p className="sort-time">Time since sort started: 0</p>
+                        <p className="sort-swaps">Number of swaps: 0</p>
+                    </div>
+                </div>
+                <div className="array-container">
+                    {array.map((value, idx) => (
+                        <div 
+                            className="array-bar" 
+                            key={idx}
+                            style={{height: `${value}px`}}></div>
+                    ))}
+                <ThemeProvider theme={theme}>
+                    <ButtonGroup
+                        resetArray={this.resetArray}
+                        bubbleSort={this.bubbleSort}
+                        heapSort={this.heapSort}
+                        mergeSort={this.mergeSort}
+                        quickSort={this.quickSort}
+                    />
+                </ThemeProvider>
+                </div>
             </div>
         );
     }
