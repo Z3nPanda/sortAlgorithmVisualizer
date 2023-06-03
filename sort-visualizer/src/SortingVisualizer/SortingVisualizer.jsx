@@ -2,6 +2,7 @@ import React from 'react';
 import * as mergeSortAlg from '../SortingAlgorithms/mergeSort';
 import * as heapSortAlg from '../SortingAlgorithms/heapSort';
 import * as bubbleSortAlg from '../SortingAlgorithms/bubbleSort';
+import * as quickSortAlg from '../SortingAlgorithms/quickSort';
 import { ThemeProvider } from '@mui/material/styles';
 import theme from '../StyleFeatures/theme';
 import ButtonGroup from '../Components/button';
@@ -137,11 +138,6 @@ export default class SortingVisualizer extends React.Component {
         }, animations.length * ANIMATION_SPEED_MS);
     }
       
-      
-      
-       
-      
-
     mergeSort() {
         // merge sort implementation from following https://www.youtube.com/watch?v=pFXYym4Wbkc tutorial to learn basic setup for sort visualization
 
@@ -174,7 +170,44 @@ export default class SortingVisualizer extends React.Component {
         }
     }
 
-    quickSort() {}
+    quickSort() {
+        const { animations, sortedArray } = quickSortAlg.quickSort(this.state.array);
+        const isSorted = arrayIsSorted(sortedArray);
+        console.log("Is sorted:", isSorted);
+        
+        const arrayBars = document.getElementsByClassName('array-bar');
+        
+        for (let i = 0; i < animations.length; i++) {
+            const [barOneIdx, barTwoIdx] = animations[i];
+        
+            // color change animation
+            setTimeout(() => {
+            const barOneStyle = arrayBars[barOneIdx].style;
+            const barTwoStyle = arrayBars[barTwoIdx].style;
+            const color = i % 2 === 0 ? 'red' : 'black';
+            barOneStyle.backgroundColor = color;
+            barTwoStyle.backgroundColor = color;
+            }, i * ANIMATION_SPEED_MS);
+        
+            // swap animation
+            setTimeout(() => {
+            const barOneStyle = arrayBars[barOneIdx].style;
+            const barTwoStyle = arrayBars[barTwoIdx].style;
+            const tempHeight = barOneStyle.height;
+            barOneStyle.height = barTwoStyle.height;
+            barTwoStyle.height = tempHeight;
+            }, (i + 1) * ANIMATION_SPEED_MS);
+        
+            // revert color after swap
+            setTimeout(() => {
+            const barOneStyle = arrayBars[barOneIdx].style;
+            const barTwoStyle = arrayBars[barTwoIdx].style;
+            barOneStyle.backgroundColor = 'black';
+            barTwoStyle.backgroundColor = 'black';
+            }, (i + 1) * ANIMATION_SPEED_MS);
+        }
+    }
+      
 
     // render to array to screen
     render () {
