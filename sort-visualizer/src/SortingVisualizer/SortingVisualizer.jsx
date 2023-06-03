@@ -1,6 +1,6 @@
 import React from 'react';
 import * as mergeSortAlg from '../SortingAlgorithms/mergeSort';
-// import * as heapSortAlg from '../SortingAlgorithms/heapSort';
+import * as heapSortAlg from '../SortingAlgorithms/heapSort';
 import * as bubbleSortAlg from '../SortingAlgorithms/bubbleSort';
 import { ThemeProvider } from '@mui/material/styles';
 import theme from '../StyleFeatures/theme';
@@ -60,6 +60,7 @@ export default class SortingVisualizer extends React.Component {
         // ensure sorting algorithm is working
         const isSorted = arrayIsSorted(sortedArray);
         console.log("Is sorted:", isSorted);
+        this.swaps = 0;
 
         for (let i = 0; i < animations.length; i++) {
           const arrayBars = document.getElementsByClassName('array-bar');
@@ -97,7 +98,49 @@ export default class SortingVisualizer extends React.Component {
       
       
 
-    heapSort() {}
+    heapSort() {
+        const { animations, sortedArray } = heapSortAlg.heapSort(this.state.array);
+        const isSorted = arrayIsSorted(sortedArray);
+        console.log("Is sorted:", isSorted);
+        
+        const arrayBars = document.getElementsByClassName('array-bar');
+        
+        for (let i = 0; i < animations.length; i++) {
+            const [barOneIdx, barTwoIdx] = animations[i];
+        
+            // color change animation for the largest element
+            if (i % 2 === 0) {
+            setTimeout(() => {
+                const barStyle = arrayBars[barOneIdx].style;
+                barStyle.backgroundColor = 'red';
+            }, i * ANIMATION_SPEED_MS);
+            }
+            // color change animation for swapping
+            else {
+            // swap animation
+            setTimeout(() => {
+                const barOneStyle = arrayBars[barOneIdx].style;
+                const barTwoStyle = arrayBars[barTwoIdx].style;
+                const tempHeight = barOneStyle.height;
+                barOneStyle.height = barTwoStyle.height;
+                barTwoStyle.height = tempHeight;
+            }, i * ANIMATION_SPEED_MS);
+            }
+        }
+        
+        // revert color of all bars to black after the sort
+        setTimeout(() => {
+            for (let i = 0; i < arrayBars.length; i++) {
+            const barStyle = arrayBars[i].style;
+            barStyle.backgroundColor = 'black';
+            }
+        }, animations.length * ANIMATION_SPEED_MS);
+    }
+      
+      
+      
+       
+      
 
     mergeSort() {
         // merge sort implementation from following https://www.youtube.com/watch?v=pFXYym4Wbkc tutorial to learn basic setup for sort visualization
@@ -109,7 +152,7 @@ export default class SortingVisualizer extends React.Component {
         for (let i = 0; i < animations.length; i++) {
             const arrayBars = document.getElementsByClassName('array-bar');
             const isColorChange = i % 3 !== 2;
-            // Check if color needs to be updated
+            // check if color needs to be updated
             if (isColorChange) {
                 const [barOneIdx, barTwoIdx] = animations[i];
                 const barOneStyle = arrayBars[barOneIdx].style;
@@ -120,7 +163,7 @@ export default class SortingVisualizer extends React.Component {
                     barTwoStyle.backgroundColor = color;
                 }, i * ANIMATION_SPEED_MS);
             }
-            // Else height needs to be changed
+            // else height needs to be changed
             else {
                 setTimeout(() => {
                     const [barOneIdx, newHeight] = animations[i];
@@ -137,14 +180,18 @@ export default class SortingVisualizer extends React.Component {
     render () {
         const {array} = this.state;
 
+        // OLD CODE FOR SORT-ANALYTICS
+        /*
+        <div className="sort-analytics">
+            <p className="sort-time">Time since sort started: 0</p>
+            <p className="sort-swaps">Number of swaps: {this.swaps}</p>
+        </div>
+        */
+
         return (
             <div className="sorting-visualizer-container">
                 <div className="header">
                     <h1 className="sorting-visualizer-title">Sorting Visualizer</h1>
-                    <div className="sort-analytics">
-                        <p className="sort-time">Time since sort started: 0</p>
-                        <p className="sort-swaps">Number of swaps: 0</p>
-                    </div>
                 </div>
                 <div className="array-container">
                     {array.map((value, idx) => (

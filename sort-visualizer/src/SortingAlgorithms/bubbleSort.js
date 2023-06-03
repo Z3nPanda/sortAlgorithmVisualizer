@@ -26,6 +26,6 @@ export function bubbleSort(array) {
     n--;
   } while (swapped);
 
-  const sortedArray = [...array]; // create a copy of the array
+  const sortedArray = [...array];
   return { animations, sortedArray };
 }
